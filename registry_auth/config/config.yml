@@ -1,0 +1,33 @@
+server:
+  addr: ":5001"
+  certificate: "/config/cert.pem"
+  key: "/config/key.pem"
+ 
+token:
+  issuer: my_issuer
+  expiration: 900
+  certificate: "/config/cert.pem"
+ 
+users:
+  # Password is specified as a BCrypt hash. Use `htpasswd -nB USERNAME` to generate.
+  admin: 
+    password: "$2y$05$xXe1SAexjVqfL4zh200/xubCPX7HYWSMte8PPvu8MMzuy.PIu8u86"
+  readonly:
+    password: "$2y$05$BqhXurmKNaWUxXdOIm8CQ.qPOedBlh4DYJY3wqhdql2.K8nb/bVjq"
+  someuser:
+    password: "$2y$05$qQQg3xKTAr9ayfHgAyUXs.6NqxTCLlEh/QUKpRIuNu1R3aiiMEZNu"
+ 
+acl:
+  - match:
+      account: "admin"
+    actions: ["*"]
+    comment: "Admin has full access to everything."
+  - match:
+      account: "readonly"
+    actions: ["pull"]
+    comment: "Read only access."
+  - match:
+      account: "someuser"
+      name: "someuser/*"
+    actions: ["*"]
+    comment: "User can access his own namespace"
